@@ -1,0 +1,13 @@
+---
+source: src/core/service.rs
+expression: resolved
+---
+Found symbol `Parser` in test.rs:
+
+```rust
+struct Parser {
+    field: String,
+}
+```
+
+A mock struct for testing.

@@ -58,5 +58,15 @@ path-absolutize = "3.1"
 # Hashing for workspace identification
 sha2 = "0.10"
 
+# UUID generation
+uuid = { version = "1.10", features = ["v4"] }
+
+# Async trait
+async-trait = "0.1"
+
+# Futures utilities
+futures = "0.3"
+
 [dev-dependencies]
+insta = { version = "1.39", features = ["yaml"] }
 tempfile = "3.10"

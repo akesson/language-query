@@ -1,0 +1,12 @@
+---
+source: src/core/service.rs
+expression: impl_code
+---
+test.rs:2:7:
+```rust
+impl TestStruct {
+    fn new() -> Self {
+        todo!()
+    }
+}
+```

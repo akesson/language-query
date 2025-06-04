@@ -1,0 +1,11 @@
+---
+source: src/core/service.rs
+expression: docs
+---
+```rust
+field: String
+```
+
+---
+
+Documentation for `field` at test.rs:3
