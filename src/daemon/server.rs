@@ -27,7 +27,11 @@ impl DaemonServer {
         
         info!("Daemon listening on: {:?}", socket_path);
         
-        let service = Arc::new(LanguageQueryService::new(workspace).await?);
+        // Ensure we have an absolute path for the workspace
+        let absolute_workspace = workspace.canonicalize()
+            .context("Failed to canonicalize workspace path")?;
+        
+        let service = Arc::new(LanguageQueryService::new(&absolute_workspace).await?);
         
         Ok(Self {
             service,

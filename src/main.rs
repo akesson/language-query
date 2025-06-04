@@ -154,13 +154,21 @@ fn start_daemon(workspace: &PathBuf) -> Result<()> {
     let exe = std::env::current_exe()
         .context("Failed to get current executable")?;
     
+    // Create log file for daemon
+    let log_path = std::env::temp_dir().join("lq-daemon.log");
+    let log_file = std::fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(&log_path)
+        .context("Failed to open log file")?;
+    
     Command::new(&exe)
         .arg("daemon")
         .arg("--workspace")
         .arg(workspace)
         .stdin(std::process::Stdio::null())
-        .stdout(std::process::Stdio::null())
-        .stderr(std::process::Stdio::null())
+        .stdout(log_file.try_clone()?)
+        .stderr(log_file)
         .spawn()
         .context("Failed to spawn daemon")?;
     
@@ -172,33 +180,73 @@ async fn send_request_to_daemon(socket_path: &PathBuf, command: Commands) -> Res
         .context("Failed to connect to daemon")?;
     
     let request = match command {
-        Commands::Docs { location, symbol } => Request {
-            id: uuid::Uuid::new_v4().to_string(),
-            method: Method::Docs {
-                file: location.file,
-                line: location.line,
-                symbol,
-            },
+        Commands::Docs { location, symbol } => {
+            let absolute_file = if location.file.is_absolute() {
+                location.file
+            } else {
+                std::env::current_dir()
+                    .unwrap_or_default()
+                    .join(&location.file)
+            };
+            Request {
+                id: uuid::Uuid::new_v4().to_string(),
+                method: Method::Docs {
+                    file: absolute_file,
+                    line: location.line,
+                    symbol,
+                },
+            }
         },
-        Commands::Impl { location, symbol } => Request {
-            id: uuid::Uuid::new_v4().to_string(),
-            method: Method::Impl {
-                file: location.file,
-                line: location.line,
-                symbol,
-            },
+        Commands::Impl { location, symbol } => {
+            let absolute_file = if location.file.is_absolute() {
+                location.file
+            } else {
+                std::env::current_dir()
+                    .unwrap_or_default()
+                    .join(&location.file)
+            };
+            Request {
+                id: uuid::Uuid::new_v4().to_string(),
+                method: Method::Impl {
+                    file: absolute_file,
+                    line: location.line,
+                    symbol,
+                },
+            }
         },
-        Commands::Refs { location, symbol } => Request {
-            id: uuid::Uuid::new_v4().to_string(),
-            method: Method::Refs {
-                file: location.file,
-                line: location.line,
-                symbol,
-            },
+        Commands::Refs { location, symbol } => {
+            let absolute_file = if location.file.is_absolute() {
+                location.file
+            } else {
+                std::env::current_dir()
+                    .unwrap_or_default()
+                    .join(&location.file)
+            };
+            Request {
+                id: uuid::Uuid::new_v4().to_string(),
+                method: Method::Refs {
+                    file: absolute_file,
+                    line: location.line,
+                    symbol,
+                },
+            }
         },
-        Commands::Resolve { symbol, file } => Request {
-            id: uuid::Uuid::new_v4().to_string(),
-            method: Method::Resolve { file, symbol },
+        Commands::Resolve { symbol, file } => {
+            // Convert relative path to absolute
+            let absolute_file = if file.is_absolute() {
+                file
+            } else {
+                std::env::current_dir()
+                    .unwrap_or_default()
+                    .join(&file)
+            };
+            Request {
+                id: uuid::Uuid::new_v4().to_string(),
+                method: Method::Resolve { 
+                    file: absolute_file,
+                    symbol,
+                },
+            }
         },
         Commands::Status => Request {
             id: uuid::Uuid::new_v4().to_string(),

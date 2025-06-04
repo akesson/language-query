@@ -1,0 +1,2 @@
+[alias]
+lq = "run --quiet --"

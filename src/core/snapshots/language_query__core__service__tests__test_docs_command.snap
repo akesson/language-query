@@ -1,0 +1,21 @@
+---
+source: src/core/service.rs
+expression: redacted
+---
+```rust
+test_project
+```
+
+```rust
+pub struct TestStruct {
+    pub value: String,
+}
+```
+
+---
+
+size = 24 (0x18), align = 0x8, needs Drop
+
+---
+
+A test struct

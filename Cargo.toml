@@ -67,6 +67,14 @@ async-trait = "0.1"
 # Futures utilities
 futures = "0.3"
 
+# LSP implementation
+async-lsp = "0.2"
+lsp-types = "0.95"
+async-process = "2.0"
+tower = "0.4"
+url = "2.5"
+shellexpand = "3.1"
+
 [dev-dependencies]
 insta = { version = "1.39", features = ["yaml"] }
 tempfile = "3.10"

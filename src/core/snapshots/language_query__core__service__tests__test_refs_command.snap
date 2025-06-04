@@ -1,0 +1,8 @@
+---
+source: src/core/service.rs
+expression: "redacted_refs.join(\"\\n\")"
+---
+src/lib.rs:9: impl TestStruct {
+src/lib.rs:17: pub fn use_test_struct(ts: &TestStruct) -> &str {
+src/lib.rs:11: pub fn new(value: String) -> Self {
+src/lib.rs:12: Self { value }

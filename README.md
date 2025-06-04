@@ -104,6 +104,24 @@ Or build from source:
 git clone https://github.com/yourusername/language-query
 cd language-query
 cargo build --release
+cargo install --path .
+```
+
+### Using as a Cargo Alias
+
+If you're working within a Rust project, you can use the provided cargo alias:
+
+```bash
+# In your project directory with .cargo/config.toml
+cargo lq docs src/main.rs:42 MyStruct
+cargo lq refs src/lib.rs:10 MyTrait
+```
+
+To add the alias to your own project, add this to `.cargo/config.toml`:
+
+```toml
+[alias]
+lq = "run --quiet --"
 ```
 
 ## Implementation Notes

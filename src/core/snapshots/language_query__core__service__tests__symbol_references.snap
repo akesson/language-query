@@ -1,7 +1,0 @@
----
-source: src/core/service.rs
-expression: result
----
-- "lib.rs:12: let x = helper;"
-- "lib.rs:22: helper.method();"
-- "lib.rs:32: println!(\"{}\", helper);"
