@@ -1,0 +1,62 @@
+[package]
+name = "language-query"
+version = "0.1.0"
+edition = "2021"
+description = "Fast, language-agnostic CLI tool for querying code intelligence from LSP servers"
+license = "MIT"
+repository = "https://github.com/akesson/language-query"
+keywords = ["lsp", "language-server", "cli", "code-intelligence"]
+categories = ["command-line-utilities", "development-tools"]
+
+[[bin]]
+name = "lq"
+path = "src/main.rs"
+
+[dependencies]
+# CLI parsing
+clap = { version = "4.5", features = ["derive", "env"] }
+
+# Async runtime
+tokio = { version = "1.40", features = ["full"] }
+
+# Unix daemon support
+daemonize = "0.5"
+
+# IPC - using tokio's built-in Unix sockets
+# (no need for interprocess since we're Unix-only)
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Configuration
+toml = "0.8"
+directories = "5.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+tracing-appender = "0.2"
+
+# File watching
+notify = "6.1"
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Process management
+sysinfo = "0.31"
+
+# Signal handling
+signal-hook = "0.3"
+signal-hook-tokio = { version = "0.3", features = ["futures-v0_3"] }
+
+# Path handling
+path-absolutize = "3.1"
+
+# Hashing for workspace identification
+sha2 = "0.10"
+
+[dev-dependencies]
+tempfile = "3.10"
